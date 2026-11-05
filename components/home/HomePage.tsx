@@ -20,7 +20,7 @@ const aspectCards = [
   },
   {
     number: "4",
-    title: "Mất khả năng kiểm soát",
+    title: "Phụ thuộc về kiểm soát",
     description: "Đo mức độ khó giảm hoặc dừng sử dụng AI ngay cả khi người dùng biết rằng mình không thực sự cần sử dụng công cụ này.",
   },
 ];

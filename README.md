@@ -61,7 +61,7 @@ Phase 1 chỉ có bài test **AI Dependence**, phiên bản `vi-dependence-v1`, 
 | `emotional`  | Phụ thuộc về cảm xúc   | Bất an, căng thẳng hoặc thiếu tự tin khi không có AI |
 | `functional` | Phụ thuộc về chức năng | Khó hoàn thành nhiệm vụ nếu thiếu AI                 |
 | `cognitive`  | Phụ thuộc về nhận thức | Giao suy nghĩ, phân tích hoặc quyết định cho AI      |
-| `control`    | Mất khả năng kiểm soát | Khó giảm hoặc dừng sử dụng AI dù muốn                |
+| `control`    | Phụ thuộc về kiểm soát | Khó giảm hoặc dừng sử dụng AI dù muốn                |
 
 
 Đây là phiên bản rút gọn thử nghiệm lấy cảm hứng từ bốn nhóm của AIDep-22. AIDep-22 được nghiên cứu trên sinh viên đại học Trung Quốc; kết quả đó không tự động đại diện cho học sinh hoặc người dùng Việt Nam. Phase 1 không đo AI literacy tổng quát. Câu hỏi kiến thức hoặc tình huống về privacy, bias và fact-checking không được cộng vào điểm bài test này; các chủ đề đó có thể được xem xét cho phase sau.
@@ -219,7 +219,7 @@ Response mẫu:
     { "key": "emotional", "label": "Phụ thuộc về cảm xúc", "mean": 3.25, "displayMean": "3.25" },
     { "key": "functional", "label": "Phụ thuộc về chức năng", "mean": 3.5, "displayMean": "3.5" },
     { "key": "cognitive", "label": "Phụ thuộc về nhận thức", "mean": 3.0, "displayMean": "3.0" },
-    { "key": "control", "label": "Mất khả năng kiểm soát", "mean": 3.5, "displayMean": "3.5" }
+    { "key": "control", "label": "Phụ thuộc về kiểm soát", "mean": 3.5, "displayMean": "3.5" }
   ],
   "feedback": "Bạn đang sử dụng AI khá thường xuyên trong một số hoạt động.",
   "advice": [

@@ -153,7 +153,7 @@ paths:
                     mean: 3
                     displayMean: '3.0'
                   - key: control
-                    label: Mất khả năng kiểm soát
+                    label: Phụ thuộc về kiểm soát
                     mean: 3.5
                     displayMean: '3.5'
                 feedback: Bạn đang sử dụng AI khá thường xuyên trong một số hoạt động.
@@ -322,7 +322,7 @@ components:
           type: integer
           enum:
             - 2
-          description: Điểm trung bình toàn bài hiển thị cố định 2 chữ số; điểm khía cạnh hiển thị 1-2 chữ số và bỏ số 0 cuối không cần thiết.
+          description: Số chữ số hiển thị sau dấu thập phân.
         reverseScoredItems:
           type: boolean
           enum:
@@ -616,7 +616,7 @@ components:
             - Phụ thuộc về cảm xúc
             - Phụ thuộc về chức năng
             - Phụ thuộc về nhận thức
-            - Mất khả năng kiểm soát
+            - Phụ thuộc về kiểm soát
         mean:
           type: number
           format: double
@@ -626,7 +626,7 @@ components:
         displayMean:
           type: string
           pattern: '^[1-5]\.[0-9]{1,2}$'
-          description: Điểm nhóm đã làm tròn tối đa 2 chữ số để hiển thị; bỏ số 0 cuối không cần thiết nhưng giữ ít nhất 1 chữ số thập phân.
+          description: Điểm nhóm hiển thị tối đa 2 chữ số, bỏ số 0 cuối không cần thiết.
 
     Category:
       type: object
