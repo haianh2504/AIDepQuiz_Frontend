@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ApiClientError, getAiDependenceTest, submitAiDependenceTest } from "@/lib/api-client";
 import type { QuizDefinitionResponse } from "@/lib/api-types";
@@ -28,7 +28,12 @@ export function QuizPage() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isAdvancing, setIsAdvancing] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const questionStatementRef = useRef<HTMLParagraphElement>(null);
+  const shouldFocusQuestionRef = useRef(false);
+  const isAdvancingRef = useRef(false);
+  const autoAdvanceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const loadQuiz = () => {
     setIsLoading(true);
@@ -65,6 +70,19 @@ export function QuizPage() {
     };
   }, []);
 
+  useEffect(() => {
+    if (shouldFocusQuestionRef.current) {
+      shouldFocusQuestionRef.current = false;
+      questionStatementRef.current?.focus();
+    }
+  }, [currentIndex]);
+
+  useEffect(() => () => {
+    if (autoAdvanceTimerRef.current !== null) {
+      clearTimeout(autoAdvanceTimerRef.current);
+    }
+  }, []);
+
   const currentQuestion = definition?.questions[currentIndex];
   const currentAnswer = currentQuestion ? answers[currentQuestion.questionId] : undefined;
   const answeredCount = Object.keys(answers).length;
@@ -80,7 +98,7 @@ export function QuizPage() {
   }, [currentQuestion]);
 
   const selectAnswer = (value: number) => {
-    if (!currentQuestion || isSubmitting) {
+    if (!currentQuestion || isSubmitting || isAdvancingRef.current) {
       return;
     }
 
@@ -88,6 +106,46 @@ export function QuizPage() {
       ...previous,
       [currentQuestion.questionId]: value,
     }));
+
+    if (definition && !isLastQuestion) {
+      isAdvancingRef.current = true;
+      setIsAdvancing(true);
+
+      const advanceToNextQuestion = () => {
+        autoAdvanceTimerRef.current = null;
+        shouldFocusQuestionRef.current = true;
+        isAdvancingRef.current = false;
+        setIsAdvancing(false);
+        setCurrentIndex((index) => Math.min(index + 1, definition.questionCount - 1));
+      };
+
+      const delay = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 180;
+      if (delay === 0) {
+        advanceToNextQuestion();
+      } else {
+        autoAdvanceTimerRef.current = setTimeout(advanceToNextQuestion, delay);
+      }
+    }
+  };
+
+  const goToPreviousQuestion = () => {
+    shouldFocusQuestionRef.current = true;
+    setCurrentIndex((index) => Math.max(0, index - 1));
+  };
+
+  const goToNextQuestion = () => {
+    if (
+      !definition ||
+      isLastQuestion ||
+      currentAnswer === undefined ||
+      isSubmitting ||
+      isAdvancing
+    ) {
+      return;
+    }
+
+    shouldFocusQuestionRef.current = true;
+    setCurrentIndex((index) => Math.min(index + 1, definition.questionCount - 1));
   };
 
   const submit = async () => {
@@ -160,7 +218,7 @@ export function QuizPage() {
         </section>
 
         <section className="question-section" aria-labelledby="question-title">
-          <p id="question-title" className="question-statement">
+          <p id="question-title" ref={questionStatementRef} tabIndex={-1} className="question-statement">
             <strong>Câu {currentQuestion.questionNumber}:</strong> {currentQuestion.text}
           </p>
 
@@ -176,7 +234,7 @@ export function QuizPage() {
                   role="radio"
                   aria-checked={isSelected}
                   onClick={() => selectAnswer(option.value)}
-                  disabled={isSubmitting}
+                  disabled={isSubmitting || isAdvancing}
                 >
                   <strong>{option.value}.</strong> {option.text}
                 </button>
@@ -193,25 +251,30 @@ export function QuizPage() {
             <button
               className="button button-dark button-navigation"
               type="button"
-              disabled={currentIndex === 0 || isSubmitting}
-              onClick={() => setCurrentIndex((index) => Math.max(0, index - 1))}
+              disabled={currentIndex === 0 || isSubmitting || isAdvancing}
+              onClick={goToPreviousQuestion}
             >
-              Sau
+              Trước
             </button>
-            <button
-              className="button button-dark button-navigation"
-              type="button"
-              disabled={currentAnswer === undefined || isSubmitting}
-              onClick={() => {
-                if (isLastQuestion) {
-                  void submit();
-                } else {
-                  setCurrentIndex((index) => Math.min(definition.questionCount - 1, index + 1));
-                }
-              }}
-            >
-              {isSubmitting ? "Đang gửi…" : isLastQuestion ? "Hoàn thành" : "Tiếp"}
-            </button>
+            {isLastQuestion ? (
+              <button
+                className="button button-dark button-navigation"
+                type="button"
+                disabled={currentAnswer === undefined || isSubmitting}
+                onClick={() => void submit()}
+              >
+                {isSubmitting ? "Đang gửi…" : "Hoàn thành"}
+              </button>
+            ) : (
+              <button
+                className="button button-dark button-navigation"
+                type="button"
+                disabled={currentAnswer === undefined || isSubmitting || isAdvancing}
+                onClick={goToNextQuestion}
+              >
+                Tiếp
+              </button>
+            )}
           </div>
         </section>
 

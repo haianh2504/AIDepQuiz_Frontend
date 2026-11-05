@@ -9,7 +9,7 @@
 - CTA states: `/var/folders/4w/x0vxppr525l9vtycmzg5k9_80000gn/T/codex-clipboard-c7363c42-bb6c-4355-875e-fa4d52b3131f.png`, `/var/folders/4w/x0vxppr525l9vtycmzg5k9_80000gn/T/codex-clipboard-d9ef152f-8f68-49af-89d9-70eb85195949.png`
 - Internal page composition: `/Users/phanhaianh/Downloads/about (1).svg`
 - Quiz references: `/var/folders/4w/x0vxppr525l9vtycmzg5k9_80000gn/T/codex-clipboard-70948d0d-c192-47ec-93b4-c3f3a781814d.png`, `/var/folders/4w/x0vxppr525l9vtycmzg5k9_80000gn/T/codex-clipboard-d953db96-a0f6-404c-8067-60d4cce21c05.png`
-- Result reference: `/var/folders/4w/x0vxppr525l9vtycmzg5k9_80000gn/T/codex-clipboard-cc2c5d2f-150e-4965-90f9-c3f441ce4612.png`
+- Result reference: user-provided Figma screenshot, frame `2298 × 1488` (the image is not stored in the repository).
 
 ## Shared visual system
 
@@ -24,10 +24,10 @@
 
 ## Homepage `/`
 
-- `SiteHeader`: sticky top navigation with logo, desktop links, and responsive hamburger trigger.
-- `MobileNavigationDrawer`: left-side drawer with close state and the existing navigation items only.
+- `SiteHeader`: fixed navigation positioned 5% of the viewport height from the top, with a white pill container, 20px inner padding, 50px corner radius, logo, desktop links, and responsive hamburger trigger. On the Homepage hero it floats above the full-bleed background.
+- `MobileNavigationDrawer`: right-side drawer with close state, keyboard focus management, and the existing navigation items only. At tablet/mobile widths, reduce the navigation pill's vertical padding while preserving its horizontal padding and 44px controls.
 - `ScrollReveal`: reusable client wrapper for sections and items; it supports an `as` element, a visibility threshold, and stagger delay, and reveals again whenever the element re-enters the viewport.
-- `HeroSection`: title, description, primary CTA, methodology link, and centered divider. The header stays within its content max width while the hero description occupies 80% of its content block.
+- `HeroSection`: full-bleed photo background, existing title and description in white directly over the image, primary CTA, and methodology link. Use `public/images/homepage-hero-desktop.png` (1672 × 941) for wide layouts and `public/images/homepage-hero-phone.png` (972 × 1619) on phone layouts. Preserve the supplied typography and use a subtle dark overlay only as needed for text contrast.
 - `TestOverviewSection`: centered introduction, left-aligned explanatory copy, a responsive two-column grid for the four AI-dependence aspects, and the Likert response guidance beside the three-principle panel.
 - `AspectCardGrid`: four bordered aspect cards with 30px parent padding and 15px corner radius; each cyan description panel uses 20px padding and 15px corner radius. The grid collapses to one column on narrow screens.
 - `ResponseGuidance`: five Likert response rows with slightly enlarged labels and number markers, plus the three-principle panel centered vertically in the right column; all internal section dividers use the same centered 1px black rule. The columns stack on smaller screens.
@@ -42,7 +42,7 @@ The Homepage navigation targets internal section IDs. Only the start CTA navigat
 
 - `QuizQuestionView`: one statement and five API-provided options.
 - `QuizProgress`: answered-progress fill using `#C1F4FF` over `#F4F3F3`.
-- `QuizNavigation`: previous/next controls, disabled previous state, disabled previous state, and final “Hoàn thành” label. 
+- `QuizNavigation`: “Trước” and “Tiếp” controls for answered questions, a disabled “Tiếp” state until the current question has an answer, and the final “Hoàn thành” action. Selecting an option still automatically advances to the next question.
 - `SubscaleHeading`: derives the current group from the API question `subscale` key and transitions when the group changes.
 - `QuizLoadingState` and `QuizErrorState`: explicit network and malformed-response states.
 
@@ -57,6 +57,7 @@ The quiz page keeps answers in memory for the active flow. It does not calculate
 - `AdviceSection`: backend-provided advice rendered as a list of one to three bullets.
 - The result header presents the short educational disclaimer. The required backend `limitations` field remains part of the response schema; it is not rendered as a separate numbered section in the final result design.
 - `ResultActions`: confirmation-backed retry action and homepage action.
+- At the supplied desktop frame, center the title and lead above the score summary and four subscale cards; place feedback and advice in the right column and align the result actions beside the advice in the left column.
 
 On narrow viewports, the subscale cards become a vertical list. The result page has no Homepage header.
 
