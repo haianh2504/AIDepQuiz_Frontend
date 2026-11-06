@@ -650,9 +650,32 @@ a:focus-visible,
 }
 
 .aspect-card h3 {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
   font-size: var(--section-title-size);
   font-weight: 600;
   letter-spacing: 0;
+}
+
+.aspect-card-icon {
+  display: grid;
+  width: 2.25rem;
+  height: 2.25rem;
+  flex: 0 0 2.25rem;
+  place-items: center;
+  border-radius: 0.65rem;
+  background: var(--progress-complete);
+}
+
+.aspect-card-icon svg {
+  width: 1.3rem;
+  height: 1.3rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.7;
 }
 
 .aspect-card h3 span {
@@ -728,6 +751,10 @@ a:focus-visible,
   height: 1px;
   margin: clamp(4.5rem, 8vw, 7rem) auto 0;
   background: var(--line);
+}
+
+.scoring-guide-divider {
+  margin-top: clamp(2rem, 4vw, 3rem);
 }
 
 .response-guidance {
@@ -818,6 +845,154 @@ a:focus-visible,
   padding-left: 1.25rem;
 }
 
+.scoring-guide {
+  width: 100%;
+  max-width: 92.5rem;
+  margin: clamp(2.5rem, 5vw, 4rem) auto 0;
+}
+
+.scoring-guide-heading {
+  text-align: center;
+}
+
+.scoring-guide-heading h3,
+.scoring-card h4 {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: var(--section-title-size);
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: var(--line-heading-fluid);
+}
+
+.scoring-guide-heading > p {
+  width: 80%;
+  margin: 1rem auto 0;
+  font-size: var(--body-size);
+  letter-spacing: var(--tracking-copy-fluid);
+  line-height: var(--line-fluid);
+}
+
+.scoring-guide-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1rem, 2.5vw, 2rem);
+  margin-top: clamp(2rem, 4vw, 3rem);
+}
+
+.scoring-card {
+  min-width: 0;
+  border: 0.5px solid var(--line);
+  border-radius: 0.9375rem;
+  padding: clamp(1.25rem, 2.5vw, 1.875rem);
+}
+
+.scoring-card h4 {
+  font-size: var(--font-h2);
+}
+
+.scoring-scale-list,
+.scoring-level-list {
+  display: grid;
+  gap: 0.625rem;
+  margin: 1.25rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.scoring-scale-list li,
+.scoring-level-list li {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: var(--body-size);
+  line-height: var(--line-compact-fluid);
+}
+
+.scoring-scale-list li > span:first-child {
+  display: inline-grid;
+  width: 1.75rem;
+  height: 1.75rem;
+  flex: 0 0 1.75rem;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--progress-complete);
+  font-weight: 600;
+}
+
+.scoring-formulas {
+  display: grid;
+  gap: 0.875rem;
+  margin: 1.25rem 0 0;
+}
+
+.scoring-formulas div {
+  min-width: 0;
+  border-radius: 0.75rem;
+  padding: 0.875rem 1rem;
+  background: var(--progress-complete);
+}
+
+.scoring-formulas dt,
+.scoring-level-list li > span:first-child {
+  font-weight: 600;
+}
+
+.scoring-formulas dd {
+  margin: 0.25rem 0 0;
+  font-size: var(--body-size);
+  line-height: var(--line-compact-fluid);
+  overflow-wrap: anywhere;
+}
+
+.scoring-level-list li {
+  justify-content: space-between;
+  gap: 0.5rem;
+  border-radius: 0.75rem;
+  padding: 0.75rem 0.875rem;
+  color: var(--ink);
+}
+
+.scoring-level-list li[data-level="low"] {
+  background: linear-gradient(110deg, #dcfce7 0%, #a7f3d0 100%);
+}
+
+.scoring-level-list li[data-level="moderate"] {
+  background: linear-gradient(110deg, #fef9c3 0%, #fde68a 100%);
+}
+
+.scoring-level-list li[data-level="high"] {
+  background: linear-gradient(110deg, #fee2e2 0%, #fecaca 100%);
+}
+
+.scoring-level-list li > span:last-child {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.scoring-card-note {
+  margin: 1rem 0 0;
+  font-size: var(--small-size);
+  line-height: var(--line-compact-fluid);
+}
+
+.scoring-level-description {
+  margin: 0.75rem 0 0;
+  font-size: var(--body-size);
+  line-height: var(--line-fluid);
+}
+
+.scoring-disclaimer {
+  margin: clamp(1.25rem, 2.5vw, 2rem) 0 0;
+  border-radius: 0.9375rem;
+  padding: clamp(1rem, 2.5vw, 1.5rem);
+  background: var(--progress-complete);
+  font-size: var(--body-size);
+  letter-spacing: var(--tracking-copy-fluid);
+  line-height: var(--line-fluid);
+}
+
 .test-overview-divider-bottom {
   margin-top: clamp(5rem, 9vw, 8rem);
 }
@@ -881,8 +1056,7 @@ a:focus-visible,
   margin: clamp(7rem, 10vw, 9rem) auto 0;
 }
 
-.academic-research-grid h3,
-.adaptation-summary h3 {
+.academic-research-grid h3 {
   margin: 0;
   font-family: var(--font-heading);
   font-size: var(--section-title-size);
@@ -891,14 +1065,66 @@ a:focus-visible,
   line-height: var(--line-heading-fluid);
 }
 
-.aiddep-summary > p,
-.adaptation-summary > p {
+.aiddep-summary > p {
   width: 100%;
   margin: 1.5rem 0 0;
   font-size: var(--body-size);
   font-weight: 400;
   letter-spacing: var(--tracking-copy-fluid);
   line-height: var(--line-fluid);
+}
+
+.aiddep-evidence-card {
+  min-width: 0;
+  margin-top: 1.5rem;
+  overflow: hidden;
+  border: 0.5px solid var(--line);
+  border-radius: 0.9375rem;
+  background: var(--paper);
+}
+
+.aiddep-evidence-card h4 {
+  margin: 0;
+  padding: 0.75rem 1rem;
+  font-family: var(--font-heading);
+  font-size: clamp(0.9375rem, calc(0.9rem + 0.2vw), 1rem);
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: var(--line-heading-fluid);
+  background: var(--progress-complete);
+}
+
+.aiddep-evidence-card > div {
+  padding: 0.875rem 1rem;
+  background: var(--paper);
+}
+
+.aiddep-evidence-card p {
+  width: 100%;
+  margin: 0;
+  font-size: clamp(0.8125rem, calc(0.78rem + 0.18vw), 0.9375rem);
+  font-weight: 400;
+  letter-spacing: var(--tracking-copy-fluid);
+  line-height: var(--line-fluid);
+  overflow-wrap: anywhere;
+}
+
+.aiddep-research-details {
+  display: grid;
+  gap: var(--space-sm);
+  margin-top: var(--space-md);
+}
+
+.aiddep-research-details p {
+  margin: 0;
+  font-size: var(--body-size);
+  font-weight: 400;
+  letter-spacing: var(--tracking-copy-fluid);
+  line-height: var(--line-fluid);
+}
+
+.aiddep-research-details strong {
+  font-weight: 600;
 }
 
 .research-sample {
@@ -927,28 +1153,48 @@ a:focus-visible,
   margin: 3.5rem 0 0 0.75rem;
 }
 
-.research-process ul {
-  display: grid;
-  gap: 1rem;
-  margin: 1.5rem 0 0;
-  padding: 0;
-  list-style: none;
+.aidepquiz-development {
+  min-width: 0;
 }
 
-.research-process li {
+.aidepquiz-development-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-sm);
+  margin: 1.25rem 0 0;
+}
+
+.aidepquiz-development-card {
+  min-width: 0;
+  overflow: hidden;
   border: 0.5px solid var(--line);
   border-radius: 0.9375rem;
-  padding: 0.75rem 1rem;
-  font-size: var(--body-size);
+  background: var(--paper);
+}
+
+.aidepquiz-development-card h4 {
+  margin: 0;
+  padding: 0.9rem 1.25rem;
+  font-family: var(--font-heading);
+  font-size: clamp(1rem, calc(0.95rem + 0.25vw), 1.125rem);
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: var(--line-heading-fluid);
+  background: var(--progress-complete);
+}
+
+.aidepquiz-development-card > div {
+  padding: 1rem 1.25rem;
+  background: var(--paper);
+}
+
+.aidepquiz-development-card p {
+  width: 100%;
+  margin: 0;
+  font-size: clamp(0.875rem, calc(0.825rem + 0.25vw), 1rem);
   font-weight: 400;
   letter-spacing: var(--tracking-copy-fluid);
   line-height: var(--line-fluid);
-}
-
-.adaptation-summary {
-  width: 100%;
-  max-width: 92.5rem;
-  margin: clamp(7rem, 10vw, 9rem) auto 0;
 }
 
 .security-section-divider {
@@ -1573,6 +1819,14 @@ a:focus-visible,
     grid-template-columns: 1fr;
   }
 
+  .scoring-guide-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .scoring-card:last-child {
+    grid-column: 1 / -1;
+  }
+
   .principles-card {
     margin-top: 0;
   }
@@ -1663,8 +1917,7 @@ a:focus-visible,
     padding-bottom: clamp(4rem, 16vw, 6rem);
   }
 
-  .academic-research-grid,
-  .adaptation-summary {
+  .academic-research-grid {
     margin-top: clamp(3rem, 10vw, 5rem);
   }
 
@@ -1684,9 +1937,18 @@ a:focus-visible,
     display: none;
   }
 
+  .scoring-guide-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .scoring-card:last-child {
+    grid-column: auto;
+  }
+
   .hero-description,
   .result-description,
   .test-overview-lead,
+  .scoring-guide-heading > p,
   .test-overview-copy p,
   .section-description,
   .aspect-card .aspect-card-title,
