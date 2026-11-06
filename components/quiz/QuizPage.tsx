@@ -85,9 +85,40 @@ export function QuizPage() {
 
   const currentQuestion = definition?.questions[currentIndex];
   const currentAnswer = currentQuestion ? answers[currentQuestion.questionId] : undefined;
+  const finalQuestion = definition?.questions[definition.questions.length - 1];
+  const isFinalQuestionAnswered = finalQuestion !== undefined && answers[finalQuestion.questionId] !== undefined;
   const answeredCount = Object.keys(answers).length;
   const isLastQuestion = currentIndex === (definition?.questions.length ?? 0) - 1;
-  const progress = definition ? (answeredCount / definition.questionCount) * 100 : 0;
+  const quizSteps = useMemo(() => {
+    if (!definition) {
+      return [];
+    }
+
+    return definition.questions.reduce<Array<{ key: string; label: string }>>((steps, question) => {
+      if (!steps.some((step) => step.key === question.subscale)) {
+        steps.push({ key: question.subscale, label: question.subscaleLabel });
+      }
+
+      return steps;
+    }, []);
+  }, [definition]);
+
+  const currentStepIndex = currentQuestion
+    ? quizSteps.findIndex((step) => step.key === currentQuestion.subscale)
+    : -1;
+  const currentStepQuestions = currentQuestion && definition
+    ? definition.questions.filter((question) => question.subscale === currentQuestion.subscale)
+    : [];
+  const currentStepCompletedCount = currentStepQuestions.reduce((count, question, index) => {
+    if (count !== index || answers[question.questionId] === undefined) {
+      return count;
+    }
+
+    return count + 1;
+  }, 0);
+  const currentStepProgress = currentStepQuestions.length
+    ? (currentStepCompletedCount / currentStepQuestions.length) * 100
+    : 0;
 
   const subscaleTitle = useMemo(() => {
     if (!currentQuestion) {
@@ -205,16 +236,53 @@ export function QuizPage() {
           <h1 id="quiz-subscale-title" key={currentQuestion.subscale} className="quiz-group-title">
             {subscaleTitle}
           </h1>
-          <div
-            className="progress-track"
-            role="progressbar"
-            aria-label="Tiến trình bài test"
-            aria-valuemin={0}
-            aria-valuemax={definition.questionCount}
-            aria-valuenow={answeredCount}
-          >
-            <span className="progress-fill" style={{ width: `${progress}%` }} />
-          </div>
+          <nav className="quiz-step-tracker" aria-label="Tiến trình bài test">
+            <ol className="quiz-step-list" style={{ gridTemplateColumns: `repeat(${quizSteps.length}, minmax(0, 1fr))` }}>
+              {quizSteps.map((step, index) => {
+                const isCurrentStep = index === currentStepIndex;
+                const isCompletedFinalStep = step.key === finalQuestion?.subscale && isFinalQuestionAnswered;
+                const state = index < currentStepIndex || isCompletedFinalStep
+                  ? "completed"
+                  : isCurrentStep
+                    ? "current"
+                    : "upcoming";
+                const statusLabel = state === "completed" ? "đã hoàn thành" : state === "current" ? "đang thực hiện" : "chưa thực hiện";
+                const connectorProgress = state === "completed" ? 100 : state === "current" ? currentStepProgress : 0;
+
+                return (
+                  <li
+                    className={`quiz-step is-${state}`}
+                    key={step.key}
+                    aria-current={isCurrentStep ? "step" : undefined}
+                    aria-label={`Bước ${index + 1}: ${step.label}, ${statusLabel}`}
+                  >
+                    {index < quizSteps.length - 1 ? (
+                      <span className="quiz-step-connector" aria-hidden="true">
+                        <span style={{ width: `${connectorProgress}%` }} />
+                      </span>
+                    ) : null}
+                    <span className="quiz-step-marker" aria-hidden="true">
+                      {state === "completed" ? (
+                        <svg viewBox="0 0 20 20" focusable="false">
+                          <path d="m4 10.5 4 4 8-9" />
+                        </svg>
+                      ) : state === "current" ? (
+                        <span className="quiz-step-current-dot" />
+                      ) : (
+                        index + 1
+                      )}
+                    </span>
+                    {isCurrentStep ? (
+                      <span className="quiz-step-tooltip" aria-hidden="true">
+                        <span>Bước {index + 1}</span>
+                        <strong>{step.label}</strong>
+                      </span>
+                    ) : null}
+                  </li>
+                );
+              })}
+            </ol>
+          </nav>
         </section>
 
         <section className="question-section" aria-labelledby="question-title">

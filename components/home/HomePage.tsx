@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { ScrollReveal } from "@/components/motion/ScrollReveal";
 import { SiteHeader } from "@/components/navigation/SiteHeader";
 
@@ -150,6 +151,16 @@ export function HomePage() {
               </div>
             </ScrollReveal>
           </section>
+
+          <figure className="quiz-demo-figure">
+            <Image
+              src="/images/quiz-demo-clear.gif"
+              alt="Minh họa cách trả lời các câu hỏi trong bài tự đánh giá"
+              width={1100}
+              height={984}
+              unoptimized
+            />
+          </figure>
 
           <div className="test-overview-divider test-overview-divider-bottom" aria-hidden="true" />
         </section>
